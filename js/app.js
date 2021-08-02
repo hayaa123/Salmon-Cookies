@@ -1,276 +1,122 @@
 'use strict'
 
-let working_hours = 14
 
-const Seattle = {
-    min: 23,
-    max: 65,
-    avg: 6.3,
-    ncustomer: 0,
-    get_ncustomer: function () {
-        this.ncustomer = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
-        return this.ncustomer
-    },
-    sale: 0,
-    get_sales: function () {
-        this.sale = this.ncustomer * this.avg
-        return this.sale
-    },
-    array_of_sales: [],
+let working_hours = ["6am","7am","8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm","7pm" ]
+
+let body = document.querySelector("body"); 
+let table = document.createElement("table")
+body.appendChild(table)
+
+function table_head(working_hours){
+
+    let tr = document.createElement("tr")
+    table.appendChild(tr)
+
+    let th =document.createElement("th")
+    th.textContent = "  "
+    tr.appendChild(th)
+    for (let i=0;i<working_hours.length;i++){
+        let th =document.createElement("th")
+        th.textContent = working_hours[i]
+        tr.appendChild(th)
+        }
+    let th_total =document.createElement("th")
+    th_total.textContent = "Total"
+    tr.appendChild(th_total)
+}
+table_head(working_hours)
+
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
+
+
+function country (name ,min, max,avg){
+    this.name = name,
+    this.min = min ,
+    this.max = max ,
+    this.avg = avg, 
+    this.total_country = 0 ,
+    this.array_of_sales = []
+
+}
+country.prototype.get_sales = function () {
+    for (let i = 0; i < working_hours.length; i++) {
+        let avg_sale = Math.round( getRandomInt(this.min,this.max)* this.avg )
+        this.array_of_sales.push( avg_sale )
+        this.total_country += avg_sale 
+    }
+}
+country.prototype.render =  function (){ 
+    let tr = document.createElement('tr')
+    table.appendChild(tr)
+    let td_name = document.createElement('td');
+    td_name.textContent = this.name
+    tr.appendChild(td_name);
+    
+    for (let i = 0; i < working_hours.length; i++) {
+            let td = document.createElement("td")
+            td.textContent = `${this.array_of_sales[i]}`
+        tr.appendChild(td);
+        }
+        
+    let total_td =document.createElement('td')
+    total_td.textContent = this.total_country
+    tr.appendChild(total_td)
 }
 
-// let array_of_sales = []
-for (let i = 0; i < working_hours; i++) {
-    Seattle.get_ncustomer()
-    Seattle.get_sales()
-    Seattle.array_of_sales[i] = Seattle.sale
+const Seattle =new country("Seattle",23,65,6.3)
+const Tokyo =new country("Tokyo",3,24,1.2)
+const Dubai =new country("Dubai",11,38,3.7)
+const Paris =new country("Paris",20,38,2.3)
+const Lima =new country("Lima",2,16,4.6)
+
+let count_obj = [Seattle,Tokyo,Dubai,Paris,Lima]
+
+for (let i=0;i<count_obj.length;i++){
+    count_obj[i].get_sales()
+    count_obj[i].render()
 }
-// Seattle.array_of_sales = array_of_sales
+
+
+
 
 console.log(Seattle.array_of_sales)
 
-let body = document.querySelector("body");
+function table_foot (){
 
-let seattle_div = document.createElement('div')
-body.appendChild(seattle_div)
-let h1 = document.createElement('h1');
-h1.textContent = "Seattle"
-seattle_div.appendChild(h1);
+    let tr_foot = document.createElement("tr")
+    table.appendChild(tr_foot)
 
-let ul = document.createElement('ul');
-seattle_div.appendChild(ul);
+    let td_1 = document.createElement("td")
+    td_1.textContent = "total_hr"
+    tr_foot.appendChild(td_1)
+     
 
-for (let i = 0; i < working_hours; i++) {
-    let hour = i+6
-    if (hour < 12 ){
-        let li = document.createElement("li")
-    li.textContent = `${hour} am : ${Seattle.array_of_sales[i]}`
-    ul.appendChild(li);
+    let total_hr=0
+    let Totaltotal =0
+    
+    for (let j=0;j<count_obj.length;j++){
+        Totaltotal += count_obj[j].total_country
     }
-    else 
-    {let li = document.createElement("li")
-    li.textContent = `${6 + i} pm : ${Seattle.array_of_sales[i]}`
-    ul.appendChild(li);}
+    for (let i=0 ;i<working_hours.length;i++)
+    {   
+    
+        for (let j=0;j<count_obj.length;j++){
+            total_hr += count_obj[j].array_of_sales[i]
+        }
+       
+    let td_foot = document.createElement("td")
+    td_foot.textContent = total_hr
+    tr_foot.appendChild(td_foot)
+    
+   
 }
-
-// const Tokyo = {
-//     min :  3,
-//     max :  24,
-//     avg :  1.2,
-// }
-
-const Tokyo = {
-    min: 3,
-    max: 24,
-    avg: 1.2,
-    ncustomer: 0,
-    get_ncustomer: function () {
-        this.ncustomer = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
-        return this.ncustomer
-    },
-    sale: 0,
-    get_sales: function () {
-        this.sale = this.ncustomer * this.avg
-        return this.sale
-    },
-    array_of_sales: [],
+let td_totaltotal = document.createElement("td")
+td_totaltotal.textContent = Totaltotal  
+tr_foot.appendChild(td_totaltotal)    
 }
-
-// let array_of_sales = []
-for (let i = 0; i < working_hours; i++) {
-    Tokyo.get_ncustomer()
-    Tokyo.get_sales()
-    Tokyo.array_of_sales[i] = Tokyo.sale
-}
-// Tokyo.array_of_sales = array_of_sales
-
-console.log(Tokyo.array_of_sales)
-
-let Tokyo_div = document.createElement('div');
-body.appendChild(Tokyo_div); 
-
-let h1_Tokyo = document.createElement('h1');
-h1_Tokyo.textContent = "Tokyo"
-Tokyo_div.appendChild(h1_Tokyo);
-
-let ul_Tokyo = document.createElement('ul');
-Tokyo_div.appendChild(ul_Tokyo);
-
-for (let i = 0; i < working_hours; i++) {
-    let hour = i+6
-    if (hour < 12 ){
-        let li = document.createElement("li")
-    li.textContent = `${hour} am : ${Tokyo.array_of_sales[i]}`
-    ul_Tokyo.appendChild(li);
-    }
-    else 
-    {let li = document.createElement("li")
-    li.textContent = `${6 + i} pm : ${Tokyo.array_of_sales[i]}`
-    ul_Tokyo.appendChild(li);}
-}
-
-// const Dubai = {
-//     min :  11,
-//     max :  38,
-//     avg :  3.7,
-// }
-const Dubai = {
-    min: 11,
-    max: 38,
-    avg: 3.7,
-    ncustomer: 0,
-    get_ncustomer: function () {
-        this.ncustomer = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
-        return this.ncustomer
-    },
-    sale: 0,
-    get_sales: function () {
-        this.sale = this.ncustomer * this.avg
-        return this.sale
-    },
-    array_of_sales: [],
-}
-
-// let array_of_sales = []
-for (let i = 0; i < working_hours; i++) {
-    Dubai.get_ncustomer()
-    Dubai.get_sales()
-    Dubai.array_of_sales[i] = Dubai.sale
-}
-// Dubai.array_of_sales = array_of_sales
-
-console.log(Dubai.array_of_sales)
-
-let Dubai_div = document.createElement('div');
-body.appendChild(Dubai_div); 
-
-let h1_Dubai = document.createElement('h1');
-h1_Dubai.textContent = "Dubai"
-Dubai_div.appendChild(h1_Dubai);
-
-let ul_Dubai = document.createElement('ul');
-Dubai_div.appendChild(ul_Dubai);
-
-for (let i = 0; i < working_hours; i++) {
-    let hour = i+6
-    if (hour < 12 ){
-        let li = document.createElement("li")
-    li.textContent = `${hour} am : ${Dubai.array_of_sales[i]}`
-    ul_Dubai.appendChild(li);
-    }
-    else 
-    {let li = document.createElement("li")
-    li.textContent = `${6 + i} pm : ${Dubai.array_of_sales[i]}`
-    ul_Dubai.appendChild(li);}
-}
-
-// const Paris = {
-//     min :  20,
-//     max :  38,
-//     avg :  2.3,
-// }
-const Paris = {
-    min: 20,
-    max: 38,
-    avg: 2.3,
-    ncustomer: 0,
-    get_ncustomer: function () {
-        this.ncustomer = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
-        return this.ncustomer
-    },
-    sale: 0,
-    get_sales: function () {
-        this.sale = this.ncustomer * this.avg
-        return this.sale
-    },
-    array_of_sales: [],
-}
-
-// let array_of_sales = []
-for (let i = 0; i < working_hours; i++) {
-    Paris.get_ncustomer()
-    Paris.get_sales()
-    Paris.array_of_sales[i] = Paris.sale
-}
-// Paris.array_of_sales = array_of_sales
-
-console.log(Paris.array_of_sales)
-
-let Paris_div = document.createElement('div');
-body.appendChild(Paris_div); 
-
-let h1_Paris = document.createElement('h1');
-h1_Paris.textContent = "Paris"
-Paris_div.appendChild(h1_Paris);
-
-let ul_Paris = document.createElement('ul');
-Paris_div.appendChild(ul_Paris);
-
-for (let i = 0; i < working_hours; i++) {
-    let hour = i+6
-    if (hour < 12 ){
-        let li = document.createElement("li")
-    li.textContent = `${hour} am : ${Paris.array_of_sales[i]}`
-    ul_Paris.appendChild(li);
-    }
-    else 
-    {let li = document.createElement("li")
-    li.textContent = `${6 + i} pm : ${Paris.array_of_sales[i]}`
-    ul_Paris.appendChild(li);}
-}
-
-// const Lima = {
-//     min :  2,
-//     max :  16,
-//     avg :  4.6,
-// }
-
-const Lima = {
-    min: 2,
-    max: 16,
-    avg: 4.6,
-    ncustomer: 0,
-    get_ncustomer: function () {
-        this.ncustomer = Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
-        return this.ncustomer
-    },
-    sale: 0,
-    get_sales: function () {
-        this.sale = this.ncustomer * this.avg
-        return this.sale
-    },
-    array_of_sales: [],
-}
-
-// let array_of_sales = []
-for (let i = 0; i < working_hours; i++) {
-    Lima.get_ncustomer()
-    Lima.get_sales()
-    Lima.array_of_sales[i] = Lima.sale
-}
-// Lima.array_of_sales = array_of_sales
-
-console.log(Lima.array_of_sales)
-
-let Lima_div = document.createElement('div');
-body.appendChild(Lima_div); 
-
-let h1_Lima = document.createElement('h1');
-h1_Lima.textContent = "Lima"
-Lima_div.appendChild(h1_Lima);
-
-let ul_Lima = document.createElement('ul');
-Lima_div.appendChild(ul_Lima);
-
-for (let i = 0; i < working_hours; i++) {
-    let hour = i+6
-    if (hour < 12 ){
-        let li = document.createElement("li")
-    li.textContent = `${hour} am : ${Lima.array_of_sales[i]}`
-    ul_Lima.appendChild(li);
-    }
-    else 
-    {let li = document.createElement("li")
-    li.textContent = `${6 + i} pm : ${Lima.array_of_sales[i]}`
-    ul_Lima.appendChild(li);}
-}
+table_foot()
