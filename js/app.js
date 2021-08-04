@@ -120,3 +120,23 @@ td_totaltotal.textContent = Totaltotal
 tr_foot.appendChild(td_totaltotal)    
 }
 table_foot()
+
+
+let form = document.querySelector("form")
+form.addEventListener("submit",function(event){
+    event.preventDefault()
+    let C_name = event.target.name.value
+    let C_min = event.target.min.value
+    let C_max = event.target.max.value
+    let C_avg = event.target.avg.value
+
+    table.deleteRow(-1);
+
+    let new_country = new country(C_name,C_min,C_max,C_avg)
+    new_country.get_sales()
+    new_country.render()
+    count_obj.push(new_country)
+    
+    table_foot()
+})
+console.log(count_obj)

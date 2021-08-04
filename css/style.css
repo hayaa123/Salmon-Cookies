@@ -1,5 +1,5 @@
 * {
-    margin: 5px;
+    /* margin: 5px; */
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 header {
@@ -102,3 +102,18 @@ td {
 footer div:nth-child(2){
     text-decoration: underline;
 }
+
+fieldset{
+    background-color: lightskyblue;
+    float: left;
+    margin: 30px 50px;
+    border: 1px solid gray;
+    font-size: 20px;
+    
+}
+ 
+ legend {
+     margin-bottom: 20px;
+     background-color: lightskyblue;
+     ;
+ }
